@@ -5,32 +5,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
     <Compile Remove="Models\NovaPasta1\**" />
     <Compile Remove="Models\NovaPasta\**" />
-    <Compile Remove="Views\Departments\**" />
+    <Compile Remove="NewFolder\**" />
+    <Content Remove="Controllers\**" />
     <Content Remove="Models\NovaPasta1\**" />
     <Content Remove="Models\NovaPasta\**" />
-    <Content Remove="Views\Departments\**" />
+    <Content Remove="NewFolder\**" />
+    <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="Models\NovaPasta1\**" />
     <EmbeddedResource Remove="Models\NovaPasta\**" />
-    <EmbeddedResource Remove="Views\Departments\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="Controllers\**" />
     <None Remove="Models\NovaPasta1\**" />
     <None Remove="Models\NovaPasta\**" />
-    <None Remove="Views\Departments\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\DepartmentsController.cs" />
+    <Compile Include="Controllers\DepartmentsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Departments\Create.cshtml" />
-    <None Include="Views\Departments\Delete.cshtml" />
-    <None Include="Views\Departments\Details.cshtml" />
-    <None Include="Views\Departments\Edit.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
