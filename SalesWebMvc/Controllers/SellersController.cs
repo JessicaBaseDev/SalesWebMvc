@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Controllers
 {
@@ -77,6 +78,59 @@ namespace SalesWebMvc.Controllers
                 return NotFound();
             }
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+                //return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+            }
+
+            //var obj = await _sellerService.FindByIdAsync(id.Value);
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+                //return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
+
+            List<Department> departments = _departmentService.FindAll();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Seller seller)
+        {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
+            if (id != seller.Id)
+            {
+                //return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
+                return BadRequest();
+            }
+            try
+            {
+                //await _sellerService.UpdateAsync(seller);
+                _sellerService.Update(seller);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+                //return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+            catch(DbConcurrencyException)
+            {
+                return BadRequest();
+            }
         }
     }
 }
